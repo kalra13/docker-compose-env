@@ -8,6 +8,16 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
+/**
+ * Configures the {@link javax.sql.DataSource} for the country-service.
+ * <p>
+ * Values are read from environment variables with sensible defaults:
+ * <ul>
+ *     <li>DB_URL (default: jdbc:mysql://localhost:3306/docker-app)</li>
+ *     <li>DB_USER (default: root)</li>
+ *     <li>DB_PW (default: root)</li>
+ * </ul>
+ */
 @Slf4j
 @Configuration
 public class DatabaseConfiguration {

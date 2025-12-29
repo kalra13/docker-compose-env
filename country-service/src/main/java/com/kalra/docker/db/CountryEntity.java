@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * JPA entity representing a country row in the {@code countries} table.
+ */
 @Entity
 @Table(name = "countries")
 @Data
