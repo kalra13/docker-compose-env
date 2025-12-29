@@ -9,6 +9,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Application service for language lookups.
+ * <p>
+ * Fetches language rows from the database and groups them by country
+ * to produce presentation responses.
+ */
 @Slf4j
 @Component
 public class LanguageService {
@@ -20,6 +26,12 @@ public class LanguageService {
     }
 
 
+    /**
+     * Returns languages for the given list of countries.
+     *
+     * @param countries country names
+     * @return list of {@link com.kalra.docker.presentation.LanguageResponse} grouped per country
+     */
     public List<LanguageResponse>  getLanguages(List<String> countries) {
         log.info("Fetching languages for countries from db: {}", countries);
         List<LanguageEntity> entities = languageRepository.findAllByCountryIn(countries);
