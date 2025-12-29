@@ -1,0 +1,33 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: docker-app
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+
+    ports:
+      - 3306:3306
+
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: app-2
+    ports:
+      - 8080:8080
+    environment:
+      DB_URL: jdbc:mysql://db:3306/docker-app
+      DB_USER: root
+      DB_PASSWORD: root
+
+    depends_on:
+      db:
+        condition: service_healthy

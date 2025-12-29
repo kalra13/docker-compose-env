@@ -1,0 +1,52 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-db
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: docker-app
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+
+    ports:
+      - 3306:3306
+
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  language:
+    ## Docker file in app-2
+    build: ./app-2
+    container_name: language
+    ports:
+      - 8080:8080
+    environment:
+      DB_URL: jdbc:mysql://db:3306/docker-app
+      DB_USER: root
+      DB_PASSWORD: root
+
+    depends_on:
+      db:
+        condition: service_healthy
+
+  country:
+    ## Docker file in app-1
+    build: ./app-1
+    container_name: country
+    ports:
+      - 8081:8080
+    environment:
+      DB_URL: jdbc:mysql://db:3306/docker-app
+      DB_USER: root
+      DB_PASSWORD: root
+      LANGUAGE_URL: http://language:8080
+
+    depends_on:
+      db:
+        condition: service_healthy
+      language:
+        condition: service_started
