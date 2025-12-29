@@ -18,10 +18,9 @@ services:
       timeout: 5s
       retries: 5
 
-
   app:
     build: .
-    container_name: app-1
+    container_name: language-service
     ports:
       - 8080:8080
     environment:

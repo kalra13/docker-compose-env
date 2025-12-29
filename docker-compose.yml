@@ -18,35 +18,35 @@ services:
       timeout: 5s
       retries: 5
 
-  language:
-    ## Docker file in app-2
-    build: ./app-2
-    container_name: language
-    ports:
-      - 8080:8080
-    environment:
-      DB_URL: jdbc:mysql://db:3306/docker-app
-      DB_USER: root
-      DB_PASSWORD: root
-
-    depends_on:
-      db:
-        condition: service_healthy
-
-  country:
-    ## Docker file in app-1
-    build: ./app-1
-    container_name: country
+  language-service:
+    ## Docker file in language-service
+    build: ./language-service
+    container_name: language-service
     ports:
       - 8081:8080
     environment:
       DB_URL: jdbc:mysql://db:3306/docker-app
       DB_USER: root
       DB_PASSWORD: root
-      LANGUAGE_URL: http://language:8080
 
     depends_on:
       db:
         condition: service_healthy
-      language:
+
+  country-service:
+    ## Docker file in country-service
+    build: ./country-service
+    container_name: country-service
+    ports:
+      - 8080:8080
+    environment:
+      DB_URL: jdbc:mysql://db:3306/docker-app
+      DB_USER: root
+      DB_PASSWORD: root
+      LANGUAGE_URL: http://language-service:8080
+
+    depends_on:
+      db:
+        condition: service_healthy
+      language-service:
         condition: service_started

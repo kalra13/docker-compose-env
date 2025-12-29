@@ -11,16 +11,16 @@ import java.util.List;
 @Service
 public class LanguageClient {
 
-    private final RestClient app1Client;
+    private final RestClient restClient;
 
     public LanguageClient(@Value("${LANGUAGE_URL:http://localhost:8081}") String url) {
-        this.app1Client = RestClient.builder().baseUrl(url).build();
+        this.restClient = RestClient.builder().baseUrl(url).build();
     }
 
 
     public List<LanguageResponse> getLanguages(List<String> countries) {
         LanguageRequest request = new LanguageRequest(countries);
-        return app1Client.post()
+        return restClient.post()
                 .uri("/languages")
                 .body(request)
                 .retrieve()
